@@ -31,6 +31,7 @@ export default (initialState = {}, history) => {
       ...enhancers
     )
   )
+
   store.asyncReducers = {}
 
   if (module.hot) {

@@ -1,0 +1,27 @@
+.streams-wrapper {
+  width: auto;
+  white-space: nowrap;
+  height: 85vh;
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: left;
+
+
+  & > li {
+    width: 400px;
+    height: 95%;
+    min-height: 95%;
+    display: inline-block;
+    list-style-type: none;
+    padding: 0;
+    margin-right: 20px;
+  }
+}
+
+.no-streams {
+  color: gray;
+  font-size: 36px;
+  text-align: center;
+  line-height: 85vh;
+}

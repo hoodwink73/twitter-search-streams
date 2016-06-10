@@ -1,0 +1,50 @@
+.stream-wrapper {
+  width: 100%;
+  height: 100%;
+  margin: 5% auto;
+  border: 1px solid gainsboro;
+  white-space: normal;
+
+  & > li {
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+  }
+
+  header {
+    position: relative;
+
+    h2 {
+      padding: 0 10px 10px 10px;
+      font-weight: 400;
+      font-size: 18px;
+      border-bottom: 1px solid gainsboro;
+    }
+
+    .remove-stream {
+      position: absolute;
+      top: 0px;
+      right: 10px;
+      font-size: 12px;
+      color: red;
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.tweets-wrapper {
+  width: 100%;
+  height: calc(100% - 90px);
+  overflow: scroll;
+  padding: 0 10px;
+  margin: 0;
+}
+
+.tweet-wrapper {
+  width: 100%;
+  padding: 5px 0px;
+  border-bottom: 1px solid gainsboro;
+}
