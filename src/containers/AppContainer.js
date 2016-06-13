@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react'
 import { Router } from 'react-router'
 import { Provider } from 'react-redux'
+import firebase from 'firebase/app'
+import firebaseConfig from '../../.firebaseauth.json'
 
 class AppContainer extends React.Component {
   static propTypes = {
@@ -8,6 +10,10 @@ class AppContainer extends React.Component {
     routes: PropTypes.object.isRequired,
     routerKey: PropTypes.number,
     store: PropTypes.object.isRequired
+  }
+
+  componentWillMount () {
+    firebase.initializeApp(firebaseConfig)
   }
 
   render () {
