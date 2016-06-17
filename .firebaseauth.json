@@ -1,0 +1,6 @@
+{
+  "apiKey": "AIzaSyD86FdO2zcG4Wza7PzZL07duYRjJwzZ77A",
+  "authDomain": "twitter-search-streams.firebaseapp.com",
+  "databaseURL": "https://twitter-search-streams.firebaseio.com",
+  "storageBucket": "twitter-search-streams.appspot.com"
+}

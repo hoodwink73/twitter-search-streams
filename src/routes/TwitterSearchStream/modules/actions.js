@@ -4,7 +4,7 @@ export const RECEIVE_STREAM = 'RECEIVE_STREAM'
 export const REQUEST_STREAM = 'REQUEST_STREAM'
 export const REMOVE_STREAM = 'REMOVE_STREAM'
 
-const twitterStreamAPI = (keyword) => `http://127.0.0.1:5000/search/${keyword}`
+const twitterStreamAPI = (keyword) => `/api/search/${keyword}`
 
 function recieveStream (stream) {
   return {

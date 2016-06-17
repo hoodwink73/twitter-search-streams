@@ -1,5 +1,6 @@
 import Koa from 'koa'
 import convert from 'koa-convert'
+import route from 'koa-route'
 import webpack from 'webpack'
 import webpackConfig from '../build/webpack.config'
 import historyApiFallback from 'koa-connect-history-api-fallback'
@@ -9,10 +10,29 @@ import _debug from 'debug'
 import config from '../config'
 import webpackDevMiddleware from './middleware/webpack-dev'
 import webpackHMRMiddleware from './middleware/webpack-hmr'
+import Twit from 'twit'
+import twitterConfig from '../.twitterAuth.json'
 
 const debug = _debug('app:server')
 const paths = config.utils_paths
 const app = new Koa()
+
+// Route to call Twitter API with authentication and get the search data
+app.use(route.get('/api/search/:query', function * (query) {
+  const TwitterAPI = new Twit(twitterConfig)
+  const promise = new Promise(function (resolve, reject) {
+    TwitterAPI.get('search/tweets', { q: query, count: 100 }, function (err, data, response) {
+      if (err) {
+        reject(err)
+      }
+      resolve(data)
+    })
+  })
+
+  yield promise.then((data) => {
+    this.body = data
+  })
+}))
 
 // Enable koa-proxy if it has been enabled in the config.
 if (config.proxy && config.proxy.enabled) {

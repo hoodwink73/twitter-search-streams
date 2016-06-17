@@ -1,8 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Router } from 'react-router'
 import { Provider } from 'react-redux'
-import firebase from 'firebase/app'
-import firebaseConfig from '../../.firebaseauth.json'
+import twitterAuthKeys from '../../.twitterAuth.json'
 
 class AppContainer extends React.Component {
   static propTypes = {
@@ -13,7 +12,10 @@ class AppContainer extends React.Component {
   }
 
   componentWillMount () {
-    firebase.initializeApp(firebaseConfig)
+    // const T = new Twit({...twitterAuthKeys})
+    // T.get('search/tweets', { q: 'banana since:2011-07-11', count: 100 }, function(err, data, response) {
+    //   console.log(data, response)
+    // })
   }
 
   render () {

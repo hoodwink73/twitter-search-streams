@@ -1,4 +1,9 @@
-import { RECEIVE_STREAM, REQUEST_STREAM, REMOVE_STREAM } from './actions'
+import {
+  RECEIVE_STREAM,
+  REQUEST_STREAM,
+  REMOVE_STREAM
+} from './actions'
+
 import _ from 'lodash'
 
 // the initial state is bootstrapped from dummy data
@@ -23,9 +28,5 @@ function tweetStreamByKeywords (state = {}, action) {
 
   return state
 }
-
-// ------------------------------------
-// Reducer
-// ------------------------------------
 
 export { tweetStreamByKeywords }

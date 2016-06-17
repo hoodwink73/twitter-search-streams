@@ -1,6 +1,7 @@
 .DS_STORE
 *.log
-.firebaseauth.json
+.twitterAuth.json
+
 
 node_modules
 
