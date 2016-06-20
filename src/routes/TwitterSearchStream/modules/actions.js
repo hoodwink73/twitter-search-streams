@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch'
 
+export const ADD_STREAM = 'ADD_STREAM'
 export const RECEIVE_STREAM = 'RECEIVE_STREAM'
 export const REQUEST_STREAM = 'REQUEST_STREAM'
 export const REMOVE_STREAM = 'REMOVE_STREAM'
@@ -18,6 +19,13 @@ function requestStream (keyword) {
   return {
     type: REQUEST_STREAM,
     keyword: keyword
+  }
+}
+
+export function addStream (keyword) {
+  return {
+    type: ADD_STREAM,
+    keyword
   }
 }
 

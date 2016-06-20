@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import classes from './style.scss'
-import { fetchStream } from '../../modules/actions'
+import { addStream } from '../../modules/actions'
 
 const AddKeyword = ({ dispatch }) => {
   let input
@@ -19,7 +19,7 @@ const AddKeyword = ({ dispatch }) => {
         className='add-keyword'
         onClick={function (event) {
           const keyword = input.value
-          dispatch(fetchStream(keyword))
+          dispatch(addStream(keyword))
           input.value = ''
         }}
       >

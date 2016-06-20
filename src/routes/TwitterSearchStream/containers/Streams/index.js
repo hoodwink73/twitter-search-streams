@@ -1,10 +1,22 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Stream from '../../components/Stream'
-import { removeStream } from '../../modules/actions'
+import { fetchStream, removeStream } from '../../modules/actions'
 import classes from './style.scss'
+import _ from 'lodash'
 
 class Streams extends Component {
+  componentWillReceiveProps (newProps, dispatch) {
+    const oldStreamKeywords = Object.keys(this.props.streams)
+    const newStreamKeywords = Object.keys(newProps.streams)
+
+    const newKeywords = _.difference(newStreamKeywords, oldStreamKeywords)
+
+    for (let keyword of newKeywords) {
+      newProps.fetchStream(keyword)
+    }
+  }
+
   render () {
     const { streams, removeStream } = this.props
     const keywords = Object.keys(streams)
@@ -19,7 +31,7 @@ class Streams extends Component {
                   keyword={keyword}
                   tweets={streams[keyword].tweets}
                   loading={streams[keyword].loading || false}
-                  removeStream={removeStream}/>
+                  removeStream={removeStream} />
               </li>
             )
           })}
@@ -43,6 +55,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
+    fetchStream: (keyword) => {
+      dispatch(fetchStream(keyword))
+    },
     removeStream: (keyword) => {
       dispatch(removeStream(keyword))
     }

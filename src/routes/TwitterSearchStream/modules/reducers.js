@@ -1,4 +1,5 @@
 import {
+  ADD_STREAM,
   RECEIVE_STREAM,
   REQUEST_STREAM,
   REMOVE_STREAM
@@ -8,7 +9,14 @@ import _ from 'lodash'
 
 // the initial state is bootstrapped from dummy data
 function tweetStreamByKeywords (state = {}, action) {
-  if (action.type === RECEIVE_STREAM) {
+  if (action.type === ADD_STREAM) {
+    return Object.assign({}, state, {
+      [action.keyword]: {
+        tweets: [],
+        loading: false
+      }
+    })
+  } else if (action.type === RECEIVE_STREAM) {
     return Object.assign({}, state, {
       [action.keyword]: {
         tweets: action.tweets,
