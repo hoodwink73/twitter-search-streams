@@ -11,27 +11,27 @@ import _ from 'lodash'
 function tweetStreamByKeywords (state = {}, action) {
   if (action.type === ADD_STREAM) {
     return Object.assign({}, state, {
-      [action.keyword]: {
+      [action.payload.keyword]: {
         tweets: [],
         loading: false
       }
     })
   } else if (action.type === RECEIVE_STREAM) {
     return Object.assign({}, state, {
-      [action.keyword]: {
-        tweets: action.tweets,
+      [action.payload.keyword]: {
+        tweets: action.payload.tweets,
         lastUpdatedAt: Date.now(),
         loading: false
       }
     })
   } else if (action.type === REQUEST_STREAM) {
     return Object.assign({}, state, {
-      [action.keyword]: {
+      [action.payload.keyword]: {
         loading: true
       }
     })
   } else if (action.type === REMOVE_STREAM) {
-    return _.omit(state, [action.keyword])
+    return _.omit(state, [action.type.keyword])
   }
 
   return state
