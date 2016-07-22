@@ -6,12 +6,11 @@ import classes from './style.scss'
 import _ from 'lodash'
 
 class Streams extends Component {
-  componentWillReceiveProps (newProps, dispatch) {
+  componentWillReceiveProps (newProps) {
     const oldStreamKeywords = Object.keys(this.props.streams)
     const newStreamKeywords = Object.keys(newProps.streams)
 
     const newKeywords = _.difference(newStreamKeywords, oldStreamKeywords)
-
     for (let keyword of newKeywords) {
       newProps.fetchStream(keyword)
     }
@@ -48,20 +47,26 @@ class Streams extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const {
+    entities,
+    pagination
+  } = state
+
+  const keywords = Object.keys(pagination)
+  const result = {}
+  for (let keyword of keywords) {
+    result[keyword] = pagination[keyword]
+    result[keyword].tweets = pagination[keyword].tweets.map(function (tweetId) {
+      return entities.tweets[tweetId]
+    })
+  }
+
   return {
-    streams: state.tweetStreamByKeywords
+    streams: result
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    fetchStream: (keyword) => {
-      dispatch(fetchStream(keyword))
-    },
-    removeStream: (keyword) => {
-      dispatch(removeStream(keyword))
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Streams)
+export default connect(mapStateToProps, {
+  fetchStream,
+  removeStream
+})(Streams)
