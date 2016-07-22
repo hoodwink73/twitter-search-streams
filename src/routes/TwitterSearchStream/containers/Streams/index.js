@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Stream from '../../components/Stream'
-import { fetchStream, removeStream } from '../../modules/actions'
+import { fetchStream, fetchStreamNextPage, removeStream } from '../../modules/actions'
 import classes from './style.scss'
 import _ from 'lodash'
 
@@ -17,20 +17,17 @@ class Streams extends Component {
   }
 
   render () {
-    const { streams, removeStream } = this.props
+    const { streams, removeStream, fetchStreamNextPage } = this.props
     const keywords = Object.keys(streams)
 
     if (keywords && keywords.length) {
       return (
         <ul className={classes['streams-wrapper']}>
           {keywords.map((keyword) => {
+            const stream = streams[keyword]
             return (
               <li key={keyword}>
-                <Stream
-                  keyword={keyword}
-                  tweets={streams[keyword].tweets}
-                  loading={streams[keyword].loading || false}
-                  removeStream={removeStream} />
+                <Stream {...stream} keyword={keyword} fetchStreamNextPage={fetchStreamNextPage} removeStream={removeStream} />
               </li>
             )
           })}
@@ -55,7 +52,7 @@ const mapStateToProps = (state, ownProps) => {
   const keywords = Object.keys(pagination)
   const result = {}
   for (let keyword of keywords) {
-    result[keyword] = pagination[keyword]
+    result[keyword] = Object.assign({}, pagination[keyword])
     result[keyword].tweets = pagination[keyword].tweets.map(function (tweetId) {
       return entities.tweets[tweetId]
     })
@@ -68,5 +65,6 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(mapStateToProps, {
   fetchStream,
+  fetchStreamNextPage,
   removeStream
 })(Streams)

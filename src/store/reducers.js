@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux'
 import { routerReducer as router } from 'react-router-redux'
-import { tweetStreamByKeywords } from '../routes/TwitterSearchStream/modules/reducers.js'
+import { entities, pagination } from '../routes/TwitterSearchStream/modules/reducers.js'
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
     // Add sync reducers here
-    tweetStreamByKeywords,
+    entities,
+    pagination,
     router,
     ...asyncReducers
   })

@@ -3,9 +3,27 @@ import Tweet from '../Tweet/'
 import classes from './style.scss'
 
 export default function (props) {
-  const {keyword, tweets, loading, removeStream} = props
-  let TweetsWrapper
-  if (loading) {
+  const {keyword, tweets, loading, count, fetchStreamNextPage, removeStream} = props
+  let TweetsWrapper, loadMore
+
+  const loadNextPage = (e) => {
+    fetchStreamNextPage(keyword)
+    e.preventDefault()
+  }
+
+  if (count > 0) {
+    let loadingText
+    if (loading) {
+      loadingText = '...'
+    } else {
+      loadingText = 'Load More'
+    }
+    loadMore = <span className={classes['load-more']} onClick={loadNextPage}> {loadingText} </span>
+  } else {
+    loadMore = ''
+  }
+
+  if (loading && !count) {
     TweetsWrapper = <div>Loading</div>
   } else {
     TweetsWrapper = (
@@ -17,6 +35,7 @@ export default function (props) {
             </li>
           )
         })}
+        {loadMore}
       </ul>
     )
   }

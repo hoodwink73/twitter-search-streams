@@ -9,28 +9,14 @@ export const REMOVE_STREAM = 'REMOVE_STREAM'
 
 const twitterStreamAPI = (keyword) => `/api/search/${keyword}`
 
-const streamSchema = new Schema('streams', {
-  idAttribute: function (rawAPI) {
-    // rawAPI denotes exactly what twitter responds like
-    return rawAPI.search_metadata.query
-  },
-  assignEntity (output, key, value, input) {
-    // we delete search_metadata from stream
-    if (key === 'search_metadata') {
-      delete output.search_metadata
-    } else if (key === 'statuses') {
-      // rename 'statuses' key to 'tweets'
-      // after making it a part of stream
-      output.tweets = output.statuses
-      delete output.statuses
-    }
-  }
-})
+// get the search query from response from twitter
+// search api
+const getKeywordfromResponse = (response) => {
+  return response.search_metadata.query
+}
 
-const tweetSchema = new Schema('tweets', 'id_str')
-
-streamSchema.define({
-  tweets: arrayOf(tweetSchema)
+const tweetSchema = new Schema('tweets', {
+  'idAttribute': 'id_str'
 })
 
 export function addStream (keyword) {
@@ -51,7 +37,11 @@ export function removeStream (keyword) {
   }
 }
 
-export function fetchStream (keyword) {
+const getNextPageUrl = function (response) {
+  return response.search_metadata.refresh_url
+}
+
+export function fetchStream (keyword, doFetchNextPage) {
   return {
     [ CALL_API ]: {
       types: [{
@@ -62,18 +52,36 @@ export function fetchStream (keyword) {
         type: RECEIVE_STREAM,
         payload: (action, state, response) => {
           return response.json().then(response => {
-            console.log(normalize(response, streamSchema))
             return {
-              keyword,
-              tweets: response.statuses
+              keyword: getKeywordfromResponse(response),
+              response: normalize(response.statuses, arrayOf(tweetSchema)),
+              nextPageUrl: getNextPageUrl(response)
             }
           })
         }
       },
         FAILED_STREAM
       ],
-      endpoint: twitterStreamAPI(keyword),
+      endpoint (state) {
+        if (doFetchNextPage) {
+          return twitterStreamAPI(keyword) + state.pagination[keyword].nextPageUrl
+        } else {
+          return twitterStreamAPI(keyword)
+        }
+      },
+      bailout (state) {
+        // if no new page is requested and
+        // the keyword already exists in the stream
+        // don't proceed
+        if (!doFetchNextPage && state.pagination.keyword) {
+          return true
+        }
+      },
       method: 'GET'
     }
   }
+}
+
+export function fetchStreamNextPage (keyword) {
+  return fetchStream(keyword, true)
 }
