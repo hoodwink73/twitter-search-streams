@@ -57,7 +57,6 @@ const mapStateToProps = (state, ownProps) => {
       return entities.tweets[tweetId]
     })
   }
-
   return {
     streams: result
   }

@@ -1,9 +1,11 @@
 .stream-wrapper {
-  width: 100%;
+  width: 400px;
+  min-height: 500px;
   height: 100%;
   margin: 5% auto;
   border: 1px solid gainsboro;
   white-space: normal;
+  padding: 5px;
 
   & > li {
     width: 100%;

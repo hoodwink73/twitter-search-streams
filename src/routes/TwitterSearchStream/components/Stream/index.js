@@ -11,6 +11,8 @@ export default function (props) {
     e.preventDefault()
   }
 
+  // count represents what number of pages
+  // has already been loaded
   if (count > 0) {
     let loadingText
     if (loading) {
@@ -23,7 +25,9 @@ export default function (props) {
     loadMore = ''
   }
 
-  if (loading && !count) {
+  if (!count && !loading && !tweets.length) {
+    TweetsWrapper = <div>No Tweets ;( </div>
+  } else if (loading && !count) {
     TweetsWrapper = <div>Loading</div>
   } else {
     TweetsWrapper = (
